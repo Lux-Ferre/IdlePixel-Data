@@ -1,0 +1,16 @@
+{
+    "7oDYjo3d9r58EJKYi5x4E8": {
+        "permissions": [
+            "admin",
+            "tcg-public",
+            "tcg-private"
+        ],
+        "username": "Lux"
+    },
+    "mUP7PpTHmFAkxcQLWKMY8t": {
+        "permissions": [
+            "tcg-public"
+        ],
+        "username": "tcg-script"
+    }
+}
