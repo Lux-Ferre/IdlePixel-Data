@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from repo import Repo
 from internal import security
-from models import CardName
+from models import CardName, TCGTableRow
+
 
 router = APIRouter(
     prefix="/tcg",
@@ -11,9 +13,26 @@ router = APIRouter(
 user_dependency = Depends(security.get_user)
 
 
+@router.get("/all")
+async def get_all_card_data(user: dict = user_dependency) -> list[TCGTableRow]:
+    if not security.has_access(user, "tcg-private"):
+        raise HTTPException(status_code=401, detail="No permission")
+
+    with Repo() as repo:
+        all_cards = repo.get_tcg_table()
+
+    return all_cards
+
+
 @router.get("/name")
-async def get_card_name_from_id(id_number: str, user: dict = user_dependency) -> CardName:
+async def get_card_name_from_id(id_number: int, user: dict = user_dependency) -> CardName:
     if not security.has_access(user, "tcg-public"):
         raise HTTPException(status_code=401, detail="No permission")
 
-    return CardName(id=id_number, name="test")
+    with Repo() as repo:
+        result = repo.get_card_name_from_id(id_number)
+
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=204, detail="Card ID not found.")
