@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from routers import tcg
+from routers import tcg, admin
+
 
 app = FastAPI(
     responses={
@@ -10,3 +11,4 @@ app = FastAPI(
 )
 
 app.include_router(tcg.router)
+app.include_router(admin.router)
