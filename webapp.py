@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI
 
-from internal import security
+from routers import tcg
 
 app = FastAPI(
     responses={
@@ -9,16 +9,4 @@ app = FastAPI(
     }
 )
 
-
-@app.get("/tcg-public")
-async def get_test_route(user: dict = Depends(security.get_user)):
-    if not security.has_access(user, "tcg-public"):
-        raise HTTPException(status_code=401, detail="No permission")
-    return user
-
-
-@app.get("/tcg-private")
-async def get_test_route(user: dict = Depends(security.get_user)):
-    if not security.has_access(user, "tcg-private"):
-        raise HTTPException(status_code=401, detail="No permission")
-    return user
+app.include_router(tcg.router)
