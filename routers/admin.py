@@ -46,7 +46,7 @@ async def add_new_user(new_user: NewUser, user: User = user_dependency) -> User:
     with open("internal/users.json", mode="r", encoding="utf-8") as users_file:
         users = json.load(users_file)
 
-    for stored_user in users:
+    for stored_user in users.values():
         if stored_user["username"] == new_user.username:
             raise HTTPException(status_code=409, detail="User already exists.")
 
