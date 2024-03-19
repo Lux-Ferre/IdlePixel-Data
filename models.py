@@ -3,6 +3,18 @@ from datetime import datetime
 
 
 # Admin
+class User(BaseModel):
+    uuid: str
+    username: str
+    permissions: list[str]
+
+
+class NewUserPermission(BaseModel):
+    uuid: str
+    permission: str
+    allow_admin: bool = False
+
+
 class NewUser(BaseModel):
     username: str
     permissions: list[str | None]

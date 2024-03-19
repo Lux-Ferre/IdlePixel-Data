@@ -5,12 +5,20 @@
             "tcg-public",
             "tcg-private"
         ],
-        "username": "Lux"
+        "username": "lux"
     },
     "mUP7PpTHmFAkxcQLWKMY8t": {
         "permissions": [
             "tcg-public"
         ],
         "username": "tcg-script"
+    },
+    "SczTacD8ARaCVeGCD8dX89": {
+        "permissions": [
+            "admin",
+            "tcg-public",
+            "tcg-private"
+        ],
+        "username": "nades"
     }
 }
