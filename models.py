@@ -21,7 +21,7 @@ class NewUser(BaseModel):
     allow_admin: bool = False
 
 
-class RemovedUser(BaseModel):
+class UpdatedUser(BaseModel):
     uuid: str
     username: str
     allow_admin: bool = False
