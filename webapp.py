@@ -7,7 +7,8 @@ app = FastAPI(
     responses={
         204: {"description": "Request is valid but no matching content found."},
         404: {"description": "Not found"},
-    }
+    },
+    root_path="/api"
 )
 
 app.include_router(tcg.router)
