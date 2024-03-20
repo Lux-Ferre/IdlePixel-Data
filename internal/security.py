@@ -40,4 +40,11 @@ def get_user(api_key: str = Security(api_key_header)):
 
 
 def has_access(user: User, permission: str):
+    permissions_list = [
+        "admin",
+        "tcg-public", "tcg-private",
+        "hiscore-public", "hiscore-private",
+        "one-life-public", "one-life-private",
+        "id-name-private",
+    ]
     return permission in user.permissions
