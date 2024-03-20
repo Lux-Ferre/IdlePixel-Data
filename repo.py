@@ -57,23 +57,10 @@ class Repo:
 
         return cursor.fetchall()
 
-    def get_tcg_table(self) -> list[TCGTableRow]:
+    def get_tcg_table(self) -> list:
         table_data = self.get_table("game_tcg")
 
-        parsed_data = []
-
-        for row in table_data:
-            parsed_data.append(
-                TCGTableRow(
-                    id=row[0],
-                    name=row[1],
-                    holo=bool(row[2]),
-                    player_id=row[3],
-                    datetime=row[4],
-                )
-            )
-
-        return parsed_data
+        return table_data
 
     def get_card_name_from_id(self, id_num: int) -> CardName | None:
         result = self.simple_query("game_tcg", "id", id_num)

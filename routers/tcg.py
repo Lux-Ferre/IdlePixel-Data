@@ -14,7 +14,7 @@ user_dependency = Depends(security.get_user)
 
 
 @router.get("/all")
-async def get_all_card_data(user: User = user_dependency) -> list[TCGTableRow]:
+async def get_all_card_data(user: User = user_dependency) -> list:
     if not security.has_access(user, "tcg-private"):
         raise HTTPException(status_code=401, detail="No permission")
 
