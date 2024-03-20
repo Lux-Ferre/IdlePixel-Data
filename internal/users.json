@@ -3,7 +3,12 @@
         "permissions": [
             "admin",
             "tcg-public",
-            "tcg-private"
+            "tcg-private",
+            "hiscore-public",
+            "hiscore-private",
+            "one-life-public",
+            "one-life-private",
+            "id-name-private"
         ],
         "username": "lux"
     },
@@ -17,7 +22,12 @@
         "permissions": [
             "admin",
             "tcg-public",
-            "tcg-private"
+            "tcg-private",
+            "hiscore-public",
+            "hiscore-private",
+            "one-life-public",
+            "one-life-private",
+            "id-name-private"
         ],
         "username": "nades"
     }
