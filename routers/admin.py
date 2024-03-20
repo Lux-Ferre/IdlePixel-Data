@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from internal import security
 from internal.users import Users
 
-from models import User, NewUser, RemovedUser, NewUserPermission
+from models import User, NewUser, UpdatedUser, NewUserPermission
 
 
 router = APIRouter(
@@ -73,7 +73,7 @@ async def add_new_user(new_user: NewUser, user: User = user_dependency) -> User:
 
 
 @router.delete("/user")
-async def delete_user_and_associated_key(removed_user: RemovedUser, user: User = user_dependency) -> User:
+async def delete_user_and_associated_key(removed_user: UpdatedUser, user: User = user_dependency) -> User:
     if not security.has_access(user, "admin"):
         raise HTTPException(status_code=401, detail="No permission")
 
@@ -103,6 +103,38 @@ async def delete_user_and_associated_key(removed_user: RemovedUser, user: User =
         json.dump(api_keys, key_file, indent=4)
 
     return User(uuid=removed_user.uuid, **popped_user)
+
+
+@router.put("/user/key")
+async def generate_new_key_for_user(updated_user: UpdatedUser, user: User = user_dependency) -> User:
+    if not security.has_access(user, "admin"):
+        raise HTTPException(status_code=401, detail="No permission")
+
+    with open("internal/users.json", mode="r", encoding="utf-8") as users_file:
+        users = json.load(users_file)
+
+    if updated_user.uuid not in users:
+        raise HTTPException(status_code=204, detail="User not found.")
+
+    if updated_user.username != users[updated_user.uuid]["username"]:
+        raise HTTPException(status_code=422, detail="UUID:Username mismatch.")
+
+    if "admin" in users[updated_user.uuid]["permissions"] and not updated_user.allow_admin:
+        raise HTTPException(status_code=401, detail="Cannot change admin key without allow_admin.")
+
+    new_api_key = str(uuid.uuid4())
+
+    with open("internal/keys.json", mode="r", encoding="utf-8") as key_file:
+        api_keys = json.load(key_file)
+
+    api_keys = {key: val for key, val in api_keys.items() if val != updated_user.uuid}  # Remove key associated with user
+
+    api_keys[new_api_key] = updated_user.uuid
+
+    with open("internal/keys.json", mode="w", encoding="utf-8") as key_file:    # Save updated keys
+        json.dump(api_keys, key_file, indent=4)
+
+    return User(username=updated_user.username, api_key=new_api_key)
 
 
 @router.put("/user/perm")
