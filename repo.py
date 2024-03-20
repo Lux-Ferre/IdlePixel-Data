@@ -23,6 +23,8 @@ class Repo:
                 password=os.getenv("fastapi_mysql_password"),
                 database="idlepixel"
             )
+
+            return self
         except mysql.connector.Error as err:
             if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
                 print("Something is wrong with your user name or password")
@@ -41,9 +43,9 @@ class Repo:
         query = "SELECT * FROM " + table
         params = tuple()
 
-        result = cursor.execute(query, params)
+        cursor.execute(query, params)
 
-        return result.fetchall()
+        return cursor.fetchall()
 
     def simple_query(self, table: str, col: str, param):
         cursor = self.connection.cursor()
@@ -51,9 +53,9 @@ class Repo:
         query = f"SELECT * FROM {table} WHERE {col}=%s"
         params = (param,)
 
-        result = cursor.execute(query, params)
+        cursor.execute(query, params)
 
-        return result.fetchall()
+        return cursor.fetchall()
 
     def get_tcg_table(self) -> list[TCGTableRow]:
         table_data = self.get_table("game_tcg")
