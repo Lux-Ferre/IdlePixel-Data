@@ -21,6 +21,12 @@ class NewUser(BaseModel):
     allow_admin: bool = False
 
 
+class RemovedUser(BaseModel):
+    uuid: str
+    username: str
+    allow_admin: bool = False
+
+
 # Repo
 class TCGTableRow(BaseModel):
     datetime: datetime
