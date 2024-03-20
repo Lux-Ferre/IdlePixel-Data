@@ -4,9 +4,9 @@ from datetime import datetime
 
 # Admin
 class User(BaseModel):
-    uuid: str
-    username: str
-    permissions: list[str]
+    uuid: str = "*****"
+    username: str = "*****"
+    permissions: list[str] = ["*****"]
     api_key: str = "*****"
 
 
