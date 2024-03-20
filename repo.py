@@ -78,6 +78,6 @@ class Repo:
     def get_card_name_from_id(self, id_num: int) -> CardName | None:
         result = self.simple_query("game_tcg", "id", id_num)
         if result:
-            return CardName(id=id_num, name=result[0][3])
+            return CardName(id=id_num, name=result[0][1])
         else:
             return None
