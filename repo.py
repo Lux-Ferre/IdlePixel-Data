@@ -69,7 +69,7 @@ class Repo:
                     name=row[1],
                     holo=bool(row[2]),
                     player_id=row[3],
-                    datetime=datetime.strptime(row[4], "%Y-%m-%d %H:%M:%S"),
+                    datetime=row[4],
                 )
             )
 
