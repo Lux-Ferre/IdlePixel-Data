@@ -7,6 +7,7 @@ class User(BaseModel):
     uuid: str
     username: str
     permissions: list[str]
+    api_key: str = "*****"
 
 
 class NewUserPermission(BaseModel):
