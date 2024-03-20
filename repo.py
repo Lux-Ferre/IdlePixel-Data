@@ -65,11 +65,11 @@ class Repo:
         for row in table_data:
             parsed_data.append(
                 TCGTableRow(
-                    datetime=datetime.strptime(row[0], "%Y-%m-%d %H:%M:%S"),
-                    holo=bool(row[1]),
-                    id=row[2],
-                    name=row[3],
-                    player_id=row[4],
+                    id=row[0],
+                    name=row[1],
+                    holo=bool(row[2]),
+                    player_id=row[3],
+                    datetime=datetime.strptime(row[4], "%Y-%m-%d %H:%M:%S"),
                 )
             )
 
