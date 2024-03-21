@@ -6,7 +6,7 @@ import mysql.connector
 from datetime import datetime
 from mysql.connector import errorcode
 
-from models import TCGTableRow, CardName
+from models import TCGTableRow, CardName, PlayerName
 
 dotenv.load_dotenv()    # Handles env vars during development
 
@@ -66,5 +66,12 @@ class Repo:
         result = self.simple_query("game_tcg", "id", id_num)
         if result:
             return CardName(id=id_num, name=result[0][1])
+        else:
+            return None
+
+    def get_player_name_from_id(self, player_id: int) -> PlayerName | None:
+        result = self.simple_query("player_id_name_view", "id", player_id)
+        if result:
+            return PlayerName(id=player_id, name=result[0][1])
         else:
             return None

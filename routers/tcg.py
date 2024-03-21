@@ -3,7 +3,7 @@ from fastapi.responses import ORJSONResponse
 
 from repo import Repo
 from internal import security
-from models import User, CardName, TCGTableRow
+from models import User, CardName, PlayerName
 
 
 router = APIRouter(
@@ -37,3 +37,25 @@ async def get_card_name_from_id(id_number: int, user: User = user_dependency) ->
         return result
     else:
         raise HTTPException(status_code=204, detail="Card ID not found.")
+
+
+@router.get("/player")
+async def get_player_name_from_card_id(id_number: int, user: User = user_dependency) -> PlayerName:
+    if not security.has_access(user, "tcg-private"):
+        raise HTTPException(status_code=401, detail="No permission")
+    if not security.has_access(user, "id-name-private"):
+        raise HTTPException(status_code=401, detail="No permission")
+
+    with Repo() as repo:
+        owner_id = repo.get_card_name_from_id(id_number).id
+
+    if not owner_id:
+        raise HTTPException(status_code=204, detail="Card ID not found.")
+
+    with Repo() as repo:
+        owner_name_and_id = repo.get_player_name_from_id(owner_id)
+
+    if owner_name_and_id:
+        return PlayerName(id=id_number, name=owner_name_and_id.name)
+    else:
+        raise HTTPException(status_code=204, detail="Player ID not found.")

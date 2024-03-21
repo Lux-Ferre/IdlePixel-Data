@@ -41,3 +41,9 @@ class TCGTableRow(BaseModel):
 class CardName(BaseModel):
     id: int
     name: str
+
+
+# Player ID
+class PlayerName(BaseModel):
+    id: int
+    name: str
