@@ -47,7 +47,7 @@ async def get_player_name_from_card_id(id_number: int, user: User = user_depende
         raise HTTPException(status_code=401, detail="No permission")
 
     with Repo() as repo:
-        owner_id = repo.get_card_name_from_id(id_number).id
+        owner_id = repo.get_owner_id_from_card_id(id_number)
 
     if not owner_id:
         raise HTTPException(status_code=204, detail="Card ID not found.")

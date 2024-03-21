@@ -69,6 +69,13 @@ class Repo:
         else:
             return None
 
+    def get_owner_id_from_card_id(self, id_num: int) -> int | None:
+        result = self.simple_query("game_tcg", "id", id_num)
+        if result:
+            return result[0][3]
+        else:
+            return None
+
     def get_player_name_from_id(self, player_id: int) -> PlayerName | None:
         result = self.simple_query("player_id_name_view", "id", player_id)
         if result:
