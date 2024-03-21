@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import ORJSONResponse
 
 from repo import Repo
 from internal import security
@@ -13,15 +14,15 @@ router = APIRouter(
 user_dependency = Depends(security.get_user)
 
 
-@router.get("/all")
-async def get_all_card_data(user: User = user_dependency) -> list:
+@router.get("/all", response_class=ORJSONResponse)
+async def get_all_card_data(user: User = user_dependency):
     if not security.has_access(user, "tcg-private"):
         raise HTTPException(status_code=401, detail="No permission")
 
     with Repo() as repo:
         all_cards = repo.get_tcg_table()
 
-    return all_cards
+    return ORJSONResponse(all_cards)
 
 
 @router.get("/name")
