@@ -163,3 +163,4 @@ cython_debug/
 temp.py
 vars.env
 /internal/keys.json
+/internal/users.json
