@@ -69,7 +69,7 @@ async def add_new_user(new_user: NewUser, user: User = user_dependency) -> User:
     with open("internal/users.json", mode="w+", encoding="utf-8") as users_file:    # Save updated users
         json.dump(users, users_file, indent=4)
 
-    return User(uuid=user_uuid, username=new_user.username, permissions=new_user.permissions)
+    return User(uuid=user_uuid, username=new_user.username, permissions=new_user.permissions, api_key=api_key)
 
 
 @router.delete("/user")
