@@ -84,7 +84,7 @@ class Repo:
             return None
 
     def get_collection_from_player_name(self, player_name: str):
-        id_result = self.simple_query("player_id_name_view", "name", player_name)
+        id_result = self.simple_query("player_id_name_view", "username", player_name)
 
         player_id = id_result[0][0]
 
