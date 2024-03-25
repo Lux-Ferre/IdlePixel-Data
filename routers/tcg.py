@@ -59,3 +59,17 @@ async def get_player_name_from_card_id(id_number: int, user: User = user_depende
         return PlayerName(id=id_number, name=owner_name_and_id.name)
     else:
         raise HTTPException(status_code=204, detail="Player ID not found.")
+
+
+@router.get("/cards/player")
+async def get_card_collection_by_player_name(player_name: str, user: User = user_dependency):
+    if not security.has_access(user, "tcg-public"):
+        raise HTTPException(status_code=401, detail="No permission")
+
+    with Repo() as repo:
+        result = repo.get_collection_from_player_name(player_name)
+
+    if result:
+        return result
+    else:
+        raise HTTPException(status_code=204, detail="Player not found.")
