@@ -82,3 +82,12 @@ class Repo:
             return PlayerName(id=player_id, name=result[0][1])
         else:
             return None
+
+    def get_collection_from_player_name(self, player_name: str):
+        id_result = self.simple_query("player_id_name_view", "name", player_name)
+
+        player_id = id_result[0][0]
+
+        collection_result = self.simple_query("game_tcg", "player_id", player_id)
+
+        return collection_result
