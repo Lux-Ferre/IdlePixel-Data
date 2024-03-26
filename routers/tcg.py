@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import ORJSONResponse
 
 from repo import Repo
@@ -26,12 +26,11 @@ async def get_all_card_data(user: User = user_dependency):
 
 
 @router.get("/all/cached")
-async def get_all_card_data_from_cache(user: User = user_dependency):
+async def get_all_card_data_from_cache(request: Request, user: User = user_dependency):
     if not security.has_access(user, "tcg-public"):
         raise HTTPException(status_code=401, detail="No permission")
 
-    with Repo() as repo:
-        repo.cache_next_page()
+    return request.app.tcg_cache
 
 
 @router.get("/name")
