@@ -62,6 +62,29 @@ class Repo:
 
         return table_data
 
+    def cache_next_page(self):
+        page_number = 0
+        start_time = datetime.now()
+        cursor = self.connection.cursor()
+        page_size = 200
+        start_id = page_number * page_size
+        query = f"SELECT * FROM game_tcg WHERE id > {start_id} ORDER BY id LIMIT {page_size}"
+        params = tuple()
+
+        cursor.execute(query, params)
+
+        result = cursor.fetchall()
+
+        print(result)
+        end_time = datetime.now()
+        print(end_time - start_time)
+
+        # if result is None:
+        #     page_number = 0
+        # else:
+        #     tcg_cache += result
+        #     page_number += 1
+
     def get_card_name_from_id(self, id_num: int) -> CardName | None:
         result = self.simple_query("game_tcg", "id", id_num)
         if result:
