@@ -25,12 +25,12 @@ async def get_all_card_data(user: User = user_dependency):
     return ORJSONResponse(all_cards)
 
 
-@router.get("/all/cached")
+@router.get("/all/cached", response_class=ORJSONResponse)
 async def get_all_card_data_from_cache(request: Request, user: User = user_dependency):
     if not security.has_access(user, "tcg-public"):
         raise HTTPException(status_code=401, detail="No permission")
 
-    return request.app.tcg_cache
+    return ORJSONResponse(request.app.tcg_cache)
 
 
 @router.get("/name")
