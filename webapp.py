@@ -16,7 +16,7 @@ def cache_next_page():
     with Repo() as repo:
         next_page = repo.cache_next_page(app.tcg_cache_page)
 
-    if next_page is None:
+    if not next_page:
         app.tcg_cache_page = 0
     else:
         app.tcg_cache_page += 1
