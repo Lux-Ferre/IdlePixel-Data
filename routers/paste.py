@@ -2,6 +2,7 @@ import shortuuid
 
 from fastapi import APIRouter, Depends, Request, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 from internal import security
 from models import User, Paste
@@ -12,6 +13,7 @@ router = APIRouter(
 )
 
 user_dependency = Depends(security.get_user)
+templates = Jinja2Templates(directory="templates")
 
 
 @router.post("/")
@@ -24,16 +26,13 @@ async def new_paste(request: Request, paste: Paste, user: User = user_dependency
 
 
 @router.get("/", response_class=HTMLResponse)
-async def get_paste(request: Request, paste_id: str) -> str:
+async def get_paste(request: Request, paste_id: str):
     paste_string = request.app.pastes.get_entry(paste_id)
     if not paste_string:
         raise HTTPException(status_code=404, detail="No paste found for given ID")
-    return f"""
-    <html>
-        <body>
-            <textarea style="width:90vw;height:90vh;" readonly>
-{paste_string}
-            </textarea>
-        </body>
-    </html>
-"""
+
+    title = f"Paste {paste_id}"
+
+    return templates.TemplateResponse(
+        request=request, name="paste.html", context={"paste_string": paste_string, "title": title}
+    )
