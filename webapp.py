@@ -2,8 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from threading import Timer
 
-from routers import tcg, admin
+from routers import tcg, admin, paste
 from repo import Repo
+from models import ExpiringDict
 
 
 class RepeatTimer(Timer):
@@ -54,7 +55,10 @@ app.add_middleware(
 )
 
 app.include_router(tcg.router)
+app.include_router(paste.router)
 app.include_router(admin.router)
+
+app.pastes = ExpiringDict()
 
 app.tcg_cache_page = 0
 app.tcg_cache = {}

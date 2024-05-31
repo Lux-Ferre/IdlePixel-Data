@@ -1,5 +1,35 @@
+import threading
+
 from pydantic import BaseModel
 from datetime import datetime
+
+
+# Util Classes
+class ExpiringDict:
+    def __init__(self):
+        self.data = {}
+        self.lock = threading.Lock()
+
+    def add_entry(self, key, value, ttl=300):
+        with self.lock:
+            self.data[key] = value
+            print(f"Added entry: {key} -> {value}")
+            threading.Timer(ttl, self.remove_entry, args=[key]).start()
+
+    def remove_entry(self, key):
+        with self.lock:
+            if key in self.data:
+                print(f"Removing entry: {key}")
+                del self.data[key]
+
+    def get_entry(self, key):
+        with self.lock:
+            return self.data.get(key, None)
+
+
+# Paste
+class Paste(BaseModel):
+    paste: str
 
 
 # Admin
