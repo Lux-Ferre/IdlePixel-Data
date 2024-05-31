@@ -4,3 +4,4 @@ uvicorn
 mysql-connector-python
 shortuuid
 orjson
+jinja2
