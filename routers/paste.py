@@ -35,6 +35,9 @@ async def get_paste(request: Request, paste_id: str):
     if not paste_data:
         raise HTTPException(status_code=404, detail="No paste found for given ID")
 
+    if not paste_data["title"]:
+        paste_data["title"] = "Untitled Paste"
+
     return templates.TemplateResponse(
         request=request, name="paste.html", context={"paste_string": paste_data["paste"], "title": paste_data["title"]}
     )
