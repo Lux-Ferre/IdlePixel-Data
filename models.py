@@ -30,6 +30,7 @@ class ExpiringDict:
 # Paste
 class Paste(BaseModel):
     paste: str
+    title: str = ""
 
 
 # Admin

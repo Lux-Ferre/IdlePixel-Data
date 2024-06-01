@@ -21,18 +21,20 @@ async def new_paste(request: Request, paste: Paste, user: User = user_dependency
     if not security.has_access(user, "paste"):
         raise HTTPException(status_code=401, detail="No permission.")
     paste_uuid = shortuuid.uuid()
-    request.app.pastes.add_entry(paste_uuid, paste.paste)
+    paste_data = {
+        "paste": paste.paste,
+        "title": paste.title
+    }
+    request.app.pastes.add_entry(paste_uuid, paste_data)
     return paste_uuid
 
 
 @router.get("/", response_class=HTMLResponse)
 async def get_paste(request: Request, paste_id: str):
-    paste_string = request.app.pastes.get_entry(paste_id)
-    if not paste_string:
+    paste_data = request.app.pastes.get_entry(paste_id)
+    if not paste_data:
         raise HTTPException(status_code=404, detail="No paste found for given ID")
 
-    title = f"Paste {paste_id}"
-
     return templates.TemplateResponse(
-        request=request, name="paste.html", context={"paste_string": paste_string, "title": title}
+        request=request, name="paste.html", context={"paste_string": paste_data["paste"], "title": paste_data["title"]}
     )
