@@ -94,6 +94,13 @@ class Repo:
         else:
             return None
 
+    def get_id_from_player_name(self, player_name: str) -> PlayerName | None:
+        result = self.simple_query("player_id_name_view", "username", player_name)
+        if result:
+            return PlayerName(id=result[0][0], name=player_name)
+        else:
+            return None
+
     def get_collection_from_player_name(self, player_name: str):
         id_result = self.simple_query("player_id_name_view", "username", player_name)
 
