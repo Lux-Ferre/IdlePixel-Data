@@ -47,6 +47,16 @@ class Repo:
 
         return cursor.fetchall()
 
+    def get_cols_for_table(self, table: str) -> list:
+        cursor = self.connection.cursor()
+
+        query = "SHOW COLUMNS FROM " + table
+        params = tuple()
+
+        cursor.execute(query, params)
+
+        return [column[0] for column in cursor.fetchall()]
+
     def simple_query(self, table: str, col: str, param):
         cursor = self.connection.cursor()
 
