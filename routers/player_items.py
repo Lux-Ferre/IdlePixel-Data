@@ -15,23 +15,27 @@ user_dependency = Depends(security.get_user)
 
 
 @router.get("/list/name", response_class=ORJSONResponse)
-async def get_specific_items_from_player_name(player_name: str, req_items: list[str], user: User = user_dependency) -> PlayerItems:
+async def get_specific_items_from_player_name(player_name: str, req_items: str, user: User = user_dependency) -> PlayerItems:
     if not security.has_access(user, "items-private"):
         raise HTTPException(status_code=401, detail="No permission")
 
+    item_list = req_items.split("~")
+
     with Repo() as repo:
-        items = repo.get_specific_items_from_player_name(player_name, req_items)
+        items = repo.get_specific_items_from_player_name(player_name, item_list)
 
     return items
 
 
 @router.get("/list/id", response_class=ORJSONResponse)
-async def get_specific_items_from_player_id(player_id: int, req_items: list[str], user: User = user_dependency) -> PlayerItems:
+async def get_specific_items_from_player_id(player_id: int, req_items: str, user: User = user_dependency) -> PlayerItems:
     if not security.has_access(user, "items-private"):
         raise HTTPException(status_code=401, detail="No permission")
 
+    item_list = req_items.split("~")
+
     with Repo() as repo:
-        items = repo.get_specific_items_from_player_id(player_id, req_items)
+        items = repo.get_specific_items_from_player_id(player_id, item_list)
 
     return items
 
