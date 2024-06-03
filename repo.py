@@ -75,7 +75,7 @@ class Repo:
 
         cursor.execute(query, params)
 
-        return cursor.fetch()
+        return cursor.fetchall()[0][0]
 
     def get_tcg_table(self) -> list:
         table_data = self.get_table("game_tcg")
