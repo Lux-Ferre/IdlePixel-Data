@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from threading import Timer
 
-from routers import tcg, admin, paste, id_name
+from routers import tcg, admin, paste, id_name, player_items
 from repo import Repo
 from models import ExpiringDict
 
@@ -58,8 +58,9 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(tcg.router)
-app.include_router(paste.router)
+app.include_router(player_items.router)
 app.include_router(id_name.router)
+app.include_router(paste.router)
 app.include_router(admin.router)
 
 app.pastes = ExpiringDict()
