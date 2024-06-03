@@ -147,8 +147,8 @@ class Repo:
     def get_items_from_player_name(self, player_name: str) -> PlayerItems | None:
         result = self.single_value_query("player_view", "items", "username", player_name)
         if result:
-            parsed_data = self.parse_player_items(result)
-            return PlayerItems(items=parsed_data, name=player_name)
+            # parsed_data = self.parse_player_items(result)
+            return PlayerItems(items=result, name=player_name)
         else:
             return None
     # end player_view
