@@ -180,7 +180,7 @@ class Repo:
             fetched_items = {}
             for item in req_items:
                 fetched_items[item] = parsed_data.get(item, None)
-            return PlayerItems(items=fetched_items, name=player_id)
+            return PlayerItems(items=fetched_items, id=player_id)
         else:
             return None
     # end player_view
