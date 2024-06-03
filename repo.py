@@ -6,7 +6,7 @@ import mysql.connector
 from datetime import datetime
 from mysql.connector import errorcode
 
-from models import TCGTableRow, CardName, PlayerName
+from models import TCGTableRow, CardName, PlayerName, PlayerItems
 
 dotenv.load_dotenv()    # Handles env vars during development
 
@@ -142,4 +142,13 @@ class Repo:
         while i < len(data_array):
             parsed_data[data_array[i]] = data_array[i+1]
 
+        return parsed_data
+
+    def get_items_from_player_name(self, player_name: str) -> PlayerItems | None:
+        result = self.single_value_query("player_view", "items", "username", player_name)
+        if result:
+            parsed_data = self.parse_player_items(result)
+            return PlayerItems(items=parsed_data, name=player_name)
+        else:
+            return None
     # end player_view
