@@ -78,3 +78,10 @@ class CardName(BaseModel):
 class PlayerName(BaseModel):
     id: int
     name: str
+
+
+# Player Data
+class PlayerItems(BaseModel):
+    id: int | None = None
+    name: str | None = None
+    items: dict[str, str]
