@@ -135,20 +135,22 @@ class Repo:
     # end player_id_name_view
 
     # player_view
+    @staticmethod
     def parse_player_items(self, raw: str) -> dict[str, str]:
         data_array = raw.split("~")
         parsed_data = {}
         i = 0
         while i < len(data_array):
             parsed_data[data_array[i]] = data_array[i+1]
+            i += 2
 
         return parsed_data
 
     def get_items_from_player_name(self, player_name: str) -> PlayerItems | None:
         result = self.single_value_query("player_view", "items", "username", player_name)
         if result:
-            # parsed_data = self.parse_player_items(result)
-            return PlayerItems(items=result, name=player_name)
+            parsed_data = self.parse_player_items(result)
+            return PlayerItems(items=parsed_data, name=player_name)
         else:
             return None
     # end player_view

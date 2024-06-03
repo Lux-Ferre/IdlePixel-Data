@@ -84,4 +84,4 @@ class PlayerName(BaseModel):
 class PlayerItems(BaseModel):
     id: int | None = None
     name: str | None = None
-    items: str
+    items: dict[str, str]
