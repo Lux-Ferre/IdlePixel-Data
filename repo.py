@@ -135,5 +135,11 @@ class Repo:
     # end player_id_name_view
 
     # player_view
+    def parse_player_items(self, raw: str) -> dict[str, str]:
+        data_array = raw.split("~")
+        parsed_data = {}
+        i = 0
+        while i < len(data_array):
+            parsed_data[data_array[i]] = data_array[i+1]
 
     # end player_view
