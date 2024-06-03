@@ -161,4 +161,26 @@ class Repo:
             return PlayerItems(items=parsed_data, id=player_id)
         else:
             return None
+
+    def get_specific_items_from_player_name(self, player_name: str, req_items: list[str]) -> PlayerItems | None:
+        result = self.single_value_query("player_view", "items", "username", player_name)
+        if result:
+            parsed_data = self.parse_player_items(result)
+            fetched_items = {}
+            for item in req_items:
+                fetched_items[item] = parsed_data.get(item, None)
+            return PlayerItems(items=fetched_items, name=player_name)
+        else:
+            return None
+
+    def get_specific_items_from_player_id(self, player_id: int, req_items: list[str]) -> PlayerItems | None:
+        result = self.single_value_query("player_view", "items", "id", player_id)
+        if result:
+            parsed_data = self.parse_player_items(result)
+            fetched_items = {}
+            for item in req_items:
+                fetched_items[item] = parsed_data.get(item, None)
+            return PlayerItems(items=fetched_items, name=player_id)
+        else:
+            return None
     # end player_view
