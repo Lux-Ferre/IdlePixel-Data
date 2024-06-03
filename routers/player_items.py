@@ -14,12 +14,23 @@ router = APIRouter(
 user_dependency = Depends(security.get_user)
 
 
-@router.get("/all", response_class=ORJSONResponse)
+@router.get("/all/name", response_class=ORJSONResponse)
 async def get_all_items_from_name(player_name: str, user: User = user_dependency) -> PlayerItems:
     if not security.has_access(user, "items-private"):
         raise HTTPException(status_code=401, detail="No permission")
 
     with Repo() as repo:
         items = repo.get_items_from_player_name(player_name)
+
+    return items
+
+
+@router.get("/all/id", response_class=ORJSONResponse)
+async def get_all_items_from_name(player_id: int, user: User = user_dependency) -> PlayerItems:
+    if not security.has_access(user, "items-private"):
+        raise HTTPException(status_code=401, detail="No permission")
+
+    with Repo() as repo:
+        items = repo.get_items_from_player_id(player_id)
 
     return items
