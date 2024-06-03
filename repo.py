@@ -67,6 +67,16 @@ class Repo:
 
         return cursor.fetchall()
 
+    def single_value_query(self, table: str, selection: str, where: str, param):
+        cursor = self.connection.cursor()
+
+        query = f"SELECT {selection} FROM {table} WHERE {where}=%s"
+        params = (param,)
+
+        cursor.execute(query, params)
+
+        return cursor.fetch()
+
     def get_tcg_table(self) -> list:
         table_data = self.get_table("game_tcg")
 
