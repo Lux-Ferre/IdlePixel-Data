@@ -77,6 +77,7 @@ class Repo:
 
         return cursor.fetchall()[0][0]
 
+    # game_tcg
     def get_tcg_table(self) -> list:
         table_data = self.get_table("game_tcg")
 
@@ -107,6 +108,17 @@ class Repo:
         else:
             return None
 
+    def get_collection_from_player_name(self, player_name: str):
+        id_result = self.simple_query("player_id_name_view", "username", player_name)
+
+        player_id = id_result[0][0]
+
+        collection_result = self.simple_query("game_tcg", "player_id", player_id)
+
+        return collection_result
+    # end game_tcg
+
+    # player_id_name_view
     def get_player_name_from_id(self, player_id: int) -> PlayerName | None:
         result = self.single_value_query("player_id_name_view", "username", "id", player_id)
         if result:
@@ -120,12 +132,8 @@ class Repo:
             return PlayerName(id=result[0][0], name=player_name)
         else:
             return None
+    # end player_id_name_view
 
-    def get_collection_from_player_name(self, player_name: str):
-        id_result = self.simple_query("player_id_name_view", "username", player_name)
+    # player_view
 
-        player_id = id_result[0][0]
-
-        collection_result = self.simple_query("game_tcg", "player_id", player_id)
-
-        return collection_result
+    # end player_view
