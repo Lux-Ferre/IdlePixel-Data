@@ -136,7 +136,7 @@ class Repo:
 
     # player_view
     @staticmethod
-    def parse_player_items(self, raw: str) -> dict[str, str]:
+    def parse_player_items(raw: str) -> dict[str, str]:
         data_array = raw.split("~")
         parsed_data = {}
         i = 0
