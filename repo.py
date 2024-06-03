@@ -108,9 +108,9 @@ class Repo:
             return None
 
     def get_player_name_from_id(self, player_id: int) -> PlayerName | None:
-        result = self.simple_query("player_id_name_view", "id", player_id)
+        result = self.single_value_query("player_id_name_view", "username", "id", player_id)
         if result:
-            return PlayerName(id=player_id, name=result[0][1])
+            return PlayerName(id=player_id, name=result)
         else:
             return None
 
