@@ -23,7 +23,8 @@ async def new_paste(request: Request, paste: Paste, user: User = user_dependency
     paste_uuid = shortuuid.uuid()
     paste_data = {
         "paste": paste.paste,
-        "title": paste.title
+        "title": paste.title,
+        "creation_time": datetime.now(timezone.utc),
     }
     request.app.pastes.add_entry(paste_uuid, paste_data)
     return paste_uuid
@@ -38,6 +39,14 @@ async def get_paste(request: Request, paste_id: str):
     if not paste_data["title"]:
         paste_data["title"] = "Untitled Paste"
 
+    creation_timestamp = paste_data["creation_time"].timestamp()
+
     return templates.TemplateResponse(
-        request=request, name="paste.html", context={"paste_string": paste_data["paste"], "title": paste_data["title"]}
+        request=request,
+        name="paste.html",
+        context={
+            "paste_string": paste_data["paste"],
+            "title": paste_data["title"],
+            "creation_timestamp": creation_timestamp
+        }
     )
