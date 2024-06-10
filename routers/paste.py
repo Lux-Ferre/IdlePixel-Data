@@ -35,7 +35,7 @@ async def new_paste(request: Request, paste: Paste, user: User = user_dependency
 async def get_paste(request: Request, paste_id: str):
     paste_data = request.app.pastes.get_entry(paste_id)
     if not paste_data:
-        raise HTTPException(status_code=404, detail="No paste found for given ID")
+        return templates.TemplateResponse(request=request, name="paste-404.html")
 
     if not paste_data["title"]:
         paste_data["title"] = "Untitled Paste"
