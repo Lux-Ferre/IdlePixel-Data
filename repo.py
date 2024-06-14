@@ -57,6 +57,16 @@ class Repo:
 
         return [column[0] for column in cursor.fetchall()]
 
+    def query_full_column(self, table: str, col: str):
+        cursor = self.connection.cursor()
+
+        query = f"SELECT {col} FROM {table}"
+        params = tuple()
+
+        cursor.execute(query, params)
+
+        return cursor.fetchall()
+
     def simple_query(self, table: str, col: str, param):
         cursor = self.connection.cursor()
 
