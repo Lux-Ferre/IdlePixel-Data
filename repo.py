@@ -194,3 +194,12 @@ class Repo:
         else:
             return None
     # end player_view
+
+    # hiscores_onelifehardcoredeaths
+    def get_deaths_usernames(self) -> list[str]:
+        result = self.query_full_column("hiscores_onelifehardcoredeaths", "username")
+        if result:
+            name_list = [n[0] for n in result]
+            return name_list
+        else:
+            return []
