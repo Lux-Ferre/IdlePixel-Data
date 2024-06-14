@@ -24,6 +24,6 @@ async def get_death_count_per_user(user: User = user_dependency) -> dict[str, in
 
     if names:
         counter = Counter(names)
-        return counter
+        return dict(counter.most_common())
     else:
         raise HTTPException(status_code=204)
