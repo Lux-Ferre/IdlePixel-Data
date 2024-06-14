@@ -203,3 +203,18 @@ class Repo:
             return name_list
         else:
             return []
+
+    def get_levels_lost_per_enemy(self) -> dict[str, int]:
+        cursor = self.connection.cursor()
+
+        query = f"SELECT death_reason, SUM(global_level) FROM hiscores_onelifehardcoredeaths GROUP BY death_reason;"
+        params = tuple()
+
+        cursor.execute(query, params)
+
+        result = cursor.fetchall()
+
+        if result:
+            return dict(result)
+        else:
+            return {}
