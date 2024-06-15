@@ -6,18 +6,10 @@ from fastapi.security import APIKeyHeader
 from models import User
 from internal.users import Users
 
-
-with open("internal/keys.json") as key_file:
-    api_keys = json.load(key_file)
-
 api_key_header = APIKeyHeader(name="X-API-Key")
 
 
-def check_api_key(api_key: str) -> bool:
-    return api_key in api_keys
-
-
-def get_user_from_api_key(api_key: str) -> User:
+def get_user_from_api_key(api_key: str, api_keys: dict) -> User:
     user_data = Users.get_users()
     for user in user_data:
         if user.uuid == api_keys[api_key]:
@@ -30,8 +22,10 @@ def get_user_from_api_key(api_key: str) -> User:
 
 
 def get_user(api_key: str = Security(api_key_header)):
-    if check_api_key(api_key):
-        user = get_user_from_api_key(api_key)
+    with open("internal/keys.json") as key_file:
+        api_keys = json.load(key_file)
+    if api_key in api_keys:
+        user = get_user_from_api_key(api_key, api_keys)
         return user
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
